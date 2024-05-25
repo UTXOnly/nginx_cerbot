@@ -20,7 +20,7 @@ server {
     keepalive_timeout 70;
 
     location / {
-        proxy_pass http://localhost:8080;
+        proxy_pass http://172.17.0.1:8080;  # Use the Docker bridge IP address
         proxy_http_version 1.1;
         proxy_read_timeout 1d;
         proxy_send_timeout 1d;
