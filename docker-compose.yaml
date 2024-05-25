@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  nginx-certbot:
+    build: .
+    environment:
+      - DOMAIN=rust-test.serverless-nostr.com
+    ports:
+      - "80:80"
+      - "443:443"
