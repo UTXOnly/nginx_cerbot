@@ -9,13 +9,18 @@ fi
 mkdir -p /etc/nginx/sites-available
 mkdir -p /etc/nginx/sites-enabled
 
-# Use Certbot to obtain SSL certificates without interactive prompts
-certbot certonly --nginx -d $DOMAIN --agree-tos --email bh419@protonmail.com --non-interactive -v
-CERTBOT_EXIT_CODE=$?
+# Check if the certificate already exists
+if [ ! -f /etc/letsencrypt/live/$DOMAIN/fullchain.pem ] || [ ! -f /etc/letsencrypt/live/$DOMAIN/privkey.pem ]; then
+    echo "Certificate does not exist, requesting a new one..."
+    certbot certonly --nginx -d $DOMAIN --agree-tos --email bh419@protonmail.com --non-interactive -v
+    CERTBOT_EXIT_CODE=$?
 
-if [ $CERTBOT_EXIT_CODE -ne 0 ]; then
-    echo "Certbot failed with exit code $CERTBOT_EXIT_CODE"
-    exit 1
+    if [ $CERTBOT_EXIT_CODE -ne 0 ]; then
+        echo "Certbot failed with exit code $CERTBOT_EXIT_CODE"
+        exit 1
+    fi
+else
+    echo "Certificate already exists, skipping Certbot request."
 fi
 
 # Replace the placeholder in the Nginx configuration template with the actual domain
