@@ -20,11 +20,21 @@ if [ ! -f /etc/nginx/sites-enabled/$DOMAIN.conf ]; then
     ln -s /etc/nginx/sites-available/$DOMAIN.conf /etc/nginx/sites-enabled/
 fi
 
+# Check if the main configuration includes the sites-enabled directory
+if ! grep -q "include /etc/nginx/sites-enabled/*.conf;" /etc/nginx/nginx.conf; then
+    sed -i '/http {/a \    include /etc/nginx/sites-enabled/*.conf;' /etc/nginx/nginx.conf
+fi
+
 # Test the Nginx configuration
 nginx -t
 
 # Reload Nginx to apply the new configuration
-nginx -s reload
+if [ $? -eq 0 ]; then
+    nginx -s reload
+else
+    echo "Nginx configuration test failed, not reloading."
+    exit 1
+fi
 
 # Start Nginx in the foreground
 nginx -g 'daemon off;'
