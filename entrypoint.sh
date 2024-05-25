@@ -10,7 +10,7 @@ mkdir -p /etc/nginx/sites-available
 mkdir -p /etc/nginx/sites-enabled
 
 # Use Certbot to obtain SSL certificates without interactive prompts
-certbot certonly --nginx -d $DOMAIN --agree-tos --email valid-email@example.com --non-interactive
+certbot certonly --nginx -d $DOMAIN --agree-tos --email bh419@protonmail.com --non-interactive
 
 # Replace the placeholder in the Nginx configuration template with the actual domain
 sed "s/DOMAIN_NAME/$DOMAIN/g" /etc/nginx/nginx.conf.template > /etc/nginx/sites-available/$DOMAIN.conf
