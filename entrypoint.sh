@@ -6,10 +6,13 @@ if [ -z "$DOMAIN" ]; then
 fi
 
 # Use Certbot to obtain SSL certificates without interactive prompts
-certbot certonly --nginx -d $DOMAIN --agree-tos --email your-email@example.com --non-interactive
+certbot certonly --nginx -d $DOMAIN --agree-tos --email bh419@protonmail.com --non-interactive
 
 # Replace the placeholder in the Nginx configuration template with the actual domain
-sed "s/DOMAIN_NAME/$DOMAIN/g" /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
+sed "s/DOMAIN_NAME/$DOMAIN/g" /etc/nginx/nginx.conf.template > /etc/nginx/sites-available/$DOMAIN.conf
+
+# Create a symbolic link to the sites-enabled directory
+ln -s /etc/nginx/sites-available/$DOMAIN.conf /etc/nginx/sites-enabled/
 
 # Reload Nginx to apply the new configuration
 nginx -s reload
