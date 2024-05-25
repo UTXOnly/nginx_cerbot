@@ -5,6 +5,9 @@ if [ -z "$DOMAIN" ]; then
     exit 1
 fi
 
+mkdir -p /etc/nginx/sites-available
+mkdir -p /etc/nginx/sites-enabled
+
 # Use Certbot to obtain SSL certificates without interactive prompts
 certbot certonly --nginx -d $DOMAIN --agree-tos --email bh419@protonmail.com --non-interactive
 
